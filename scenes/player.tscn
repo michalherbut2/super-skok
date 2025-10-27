@@ -1,20 +1,22 @@
 [gd_scene load_steps=3 format=3 uid="uid://biibj01ba2jqn"]
 
-[ext_resource type="Texture2D" uid="uid://duvqm3r478h70" path="res://player.png" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://6m50p016ljhc" path="res://icon.svg" id="1_3vyb7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
-size = Vector2(82, 123)
+size = Vector2(30, 30)
 
 [node name="Player" type="CharacterBody2D"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-1.0000038, -63.999996)
-scale = Vector2(0.640625, 1)
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-4, -163)
+
+[node name="Animations" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Animations"]
+position = Vector2(0, -16)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_3vyb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, -62.5)
+position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_g2els")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-4, -163)

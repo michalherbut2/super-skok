@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://cougvisbbf0tg"]
+
+[ext_resource type="Texture2D" uid="uid://civuxg5ct1gxx" path="res://sprites/Flaga.png" id="1_hdgai"]
+
+[sub_resource type="Animation" id="Animation_hdgai"]
+resource_name = "Flag"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4]
+}
+
+[sub_resource type="Animation" id="Animation_step0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7c7ky"]
+_data = {
+&"Flag": SubResource("Animation_hdgai"),
+&"RESET": SubResource("Animation_step0")
+}
+
+[node name="Flag" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -24)
+texture = ExtResource("1_hdgai")
+hframes = 5
+frame = 3
+region_rect = Rect2(0, 0, 16, 48)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_7c7ky")
+}
+autoplay = "Flag"
