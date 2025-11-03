@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cl7bxjk6vcmgr"]
+
+[node name="HUD" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 605.0
+offset_top = 202.0
+offset_right = 645.0
+offset_bottom = 225.0
+text = "elo"
