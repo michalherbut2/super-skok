@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://cgdtu5a7l6rlp"]
+[gd_scene load_steps=16 format=4 uid="uid://cgdtu5a7l6rlp"]
 
 [ext_resource type="Texture2D" uid="uid://cgp2i3rbf02us" path="res://sprites/BasicGround.png" id="1_5uqbp"]
 [ext_resource type="PackedScene" uid="uid://biibj01ba2jqn" path="res://scenes/player.tscn" id="2_rerym"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dfdabw22r457o" path="res://sprites/drabina.png" id="5_5nv5w"]
 [ext_resource type="PackedScene" uid="uid://cl7bxjk6vcmgr" path="res://scenes/HUD.tscn" id="5_xp8tn"]
 [ext_resource type="PackedScene" uid="uid://cs5ctofhfqve1" path="res://scenes/star.tscn" id="7_rhhhf"]
+[ext_resource type="Texture2D" uid="uid://cgcvtish80fw" path="res://sprites/blue.png" id="8_qjcqe"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rhhhf"]
 texture = ExtResource("5_5nv5w")
@@ -94,3 +95,12 @@ hud_node_path = NodePath("../HUD")
 
 [node name="Flag" parent="." instance=ExtResource("2_uijja")]
 position = Vector2(175, -32)
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D"]
+position = Vector2(582.875, 326.59375)
+scale = Vector2(29.910715, 17.71314)
+texture = ExtResource("8_qjcqe")
