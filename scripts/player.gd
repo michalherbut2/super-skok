@@ -1,4 +1,7 @@
+# Player.gd
 extends CharacterBody2D
+
+@export var hud_node_path : NodePath
 
 @export var speed = 300
 @export var gravity = 30
@@ -11,28 +14,60 @@ extends CharacterBody2D
 @export var max_air = 3.0 # sekundy pod wodą
 var air_timer = 0.0
 
-# aktualny tryb sterowania
-var current_mode := "normal"
-var available_modes = ["normal", "gravity", "swim", "wall_jump", "balloon"]
+const CLIMB_SPEED = 200.0
+var on_ladder: bool
+var cllimbing: bool
+
+func _on_body_entered(_body: Node2D):
+	on_ladder = true
+	print("wszedł w drabinę")
+
+func _on_body_exited(_body: Node2D):
+	on_ladder = false
+	print("wyszedł w drabinę")
+
+# Dodaj _ready, aby zaktualizować HUD na starcie poziomu
+func _ready():
+	_update_hud()
+
+func _update_hud():
+	# Czytamy globalny stan z GameManager
+	var mode_name = GameManager.all_mode_names[GameManager.current_mode]
+	# NOWA, BEZPIECZNA LOGIKA:
+	if hud_node_path.is_empty():
+		print("Ścieżka do HUD nie jest ustawiona w Player!")
+		return
+
+	var hud_node = get_node_or_null(hud_node_path)
+	if hud_node:
+		var hud_label = hud_node.get_node_or_null("Control/Label")
+		if hud_label:
+			hud_label.text = "Tryb: %s" % mode_name
+		else:
+			print("Nie znaleziono etykiety 'Control/Label' wewnątrz HUD!")
+	else:
+		print("Nie znaleziono węzła HUD na podanej ścieżce!")
+
 
 func _physics_process(delta: float) -> void:
-	# zmiana trybu (np. klawiszem Tab)
+	# Zmiana trybu (teraz wywołuje funkcję w GameManager)
 	if Input.is_action_just_pressed("switch_mode"):
-		var i = available_modes.find(current_mode)
-		current_mode = available_modes[(i + 1) % available_modes.size()]
-		print("Tryb:", current_mode)
+		GameManager.switch_mode()
+		_update_hud() # Zaktualizuj HUD po przełączeniu
 
-	match current_mode:
-		"normal":
+	# MATCH STATEMENT TERAZ CZYTA Z GAMEMANAGER
+	# Musisz użyć pełnej ścieżki do enum: GameManager.MovementMode.NAZWA
+	match GameManager.current_mode:
+		GameManager.MovementMode.WALK:
 			_normal_mode(delta)
-		"gravity":
-			_gravity_mode(delta)
-		"swim":
+		GameManager.MovementMode.FLY:
+			_balloon_mode(delta) # Zakładam, że FLY to balon
+		GameManager.MovementMode.CLIMB:
+			_climb_mode(delta) # Zrób nową funkcję dla wspinaczki
+		GameManager.MovementMode.SWIM:
 			_swim_mode(delta)
-		"wall_jump":
-			_wall_jump_mode(delta)
-		"balloon":
-			_balloon_mode(delta)
+		GameManager.MovementMode.SLIDE:
+			_gravity_mode(delta) # Zakładam, że SLIDE to grawitacja
 
 # ⬅️➡️ Podstawowy ruch
 func _normal_mode(delta):
@@ -54,12 +89,84 @@ func _gravity_mode(delta):
 	velocity.y = clamp(velocity.y + gravity, -max_fall_speed, max_fall_speed)
 	move_and_slide()
 
+# 🏊 wspinanie
+#func _climb_mode(delta):
+	#var grounded = is_on_floor()
+	#if on_ladder:
+		#var dir_x = Input.get_axis("move_left", "move_right")
+		#var dir_y = Input.get_axis("move_up", "move_down")
+		#if dir_y:
+			#print("velocity.y: ", velocity.y, ", dir_y: ", dir_y, ", CLIMB_SPEED: ", CLIMB_SPEED)
+			#velocity.y = dir_y * CLIMB_SPEED
+			#cllimbing = not grounded
+		#else:
+			#velocity.y =move_toward(velocity.y, 0, CLIMB_SPEED)
+			#if grounded: cllimbing = false
+		##if cllimbing:
+			##if dir_y
+	#elif not grounded:
+		#velocity += get_gravity()*delta
+		##velocity.x = dir_x * swim_speed
+		##velocity.y = dir_y * swim_speed
+	#move_and_slide()
+#
+	## ograniczenie czasu pod wodą
+	#if is_in_water():
+		#air_timer += delta
+		#if air_timer >= max_air:
+			#print("💀 Topisz się!")
+	#else:
+		#air_timer = 0.0
+
+func _climb_mode(delta):
+	# Stała siła tarcia/hamowania w powietrzu (jak szybko tracisz prędkość)
+	const AIR_FRICTION = 500.0 
+
+	if on_ladder:
+		# --- JESTEŚMY NA DRABINIE ---
+		# Grawitacja nie działa, masz pełną kontrolę
+		
+		# Pobierz kierunek wspinaczki (góra/dół)
+		var dir_y = Input.get_axis("move_up", "move_down")
+		velocity.y = dir_y * CLIMB_SPEED
+		
+		# Pobierz kierunek wspinaczki (lewo/prawo)
+		var dir_x = Input.get_axis("move_left", "move_right")
+		velocity.x = dir_x * CLIMB_SPEED
+		
+	else:
+		# --- NIE JESTEŚMY NA DRABINIE ---
+		# W tym trybie nie można chodzić ani skakać. Gracz po prostu spada.
+		
+		# Zastosuj normalnie grawitację
+		velocity.y = min(velocity.y + gravity, max_fall_speed)
+		
+		# Wytracaj prędkość poziomą (hamowanie w powietrzu)
+		# Gracz nie ma kontroli nad ruchem lewo/prawo, gdy spada
+		velocity.x = move_toward(velocity.x, 0, AIR_FRICTION * delta)
+
+	# Wywołaj move_and_slide() RAZ na końcu funkcji, po całej logice
+	move_and_slide()
+
 # 🏊 Pływanie
 func _swim_mode(delta):
-	var dir_x = Input.get_axis("move_left", "move_right")
-	var dir_y = Input.get_axis("move_up", "move_down")
-	velocity.x = dir_x * swim_speed
-	velocity.y = dir_y * swim_speed
+	var grounded = is_on_floor()
+	if on_ladder:
+		var dir_x = Input.get_axis("move_left", "move_right")
+		var dir_y = Input.get_axis("move_up", "move_down")
+		if dir_y:
+			print("velocity.y: ", velocity.y, ", dir_y: ", dir_y, ", CLIMB_SPEED: ", CLIMB_SPEED)
+			velocity.y = dir_y * CLIMB_SPEED
+			cllimbing = not grounded
+		else:
+			velocity.y =move_toward(velocity.y, 0, CLIMB_SPEED)
+			if grounded: cllimbing = false
+		#if cllimbing:
+			#if dir_y
+	elif not grounded:
+		velocity += get_gravity()*delta
+		#velocity.x = dir_x * swim_speed
+		#velocity.y = dir_y * swim_speed
 	move_and_slide()
 
 	# ograniczenie czasu pod wodą

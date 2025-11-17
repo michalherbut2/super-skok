@@ -1,54 +1,67 @@
-extends Node2D
+# Menu.gd
+extends Control #, jeśli to scena UI
 
-# Lista dostępnych trybów
-#var available_modes = ["Tryb 1", "Tryb 2", "Tryb 3", "Tryb 4", "Tryb 5"]
-var available_modes = [1,2,3,4,5]
+@export var is_main_menu : bool = false # Domyślnie jest to menu "w domku"
 
-# Dwa sloty na wybrane opcje
-var selected_slots = [null, null]
+# NIE POTRZEBUJEMY JUŻ 'available_modes', 'mode_names' ani 'player_node_path'
+# Wszystko pobierzemy z GameManager!
 
-# Referencje do przycisków i slotów
+var selected_slots = [null, null] # To jest OK, to lokalny stan menu
+
 @onready var buttons = $VBoxContainer.get_children()
-@onready var slot_labels = $HBoxContainer.get_children()
-
+@onready var slot_labels = [$HBoxContainer/Label, $HBoxContainer/Label2]
 @onready var start_button = $ButtonStart
-@export var player_node_path : NodePath  # wskazanie węzła gracza
+# @export var player_node_path : NodePath  <- USUŃ TO
 
 func _ready():
-	# Podłącz sygnały przycisków
+	# Podłącz sygnały i ustaw tekst przycisków z GameManager
 	for i in range(buttons.size()):
-		buttons[i].text = str(available_modes[i])
-		buttons[i].pressed.connect(Callable(self, "_on_button_pressed").bind(i))
+		if i < GameManager.all_mode_names.size():
+			buttons[i].text = GameManager.all_mode_names[i]
+			buttons[i].pressed.connect(_on_button_pressed.bind(i))
+		else:
+			buttons[i].visible = false # Ukryj dodatkowe przyciski, jeśli jest ich za dużo
 
 	start_button.pressed.connect(_on_start_pressed)
 	_update_slots()
 
 func _on_start_pressed():
-	# Pobranie referencji do gracza
-	var player = get_node(player_node_path)
-	if player == null:
-		print("Błąd: nie znaleziono gracza!")
-		return
+	# 1. Sprawdź, czy wybrano DWA tryby
+	if selected_slots[0] == null or selected_slots[1] == null:
+		print("Wybierz dwa tryby!")
+		# Tutaj możesz dodać jakiś Label, który mówi graczowi, że musi wybrać 2 tryby
+		return # Przerwij funkcję, jeśli nie wybrano dwóch
 
-	# Wpisz wybrane tryby do gracza
-	player.available_modes.clear()
-	for mode in selected_slots:
-		if mode != null:
-			player.available_modes.append(mode)
+	# 2. Zapisz wybrane tryby do GameManager
+	GameManager.set_selected_modes(selected_slots[0], selected_slots[1])
 
-	# Ustaw pierwszy tryb jako aktualny
-	if player.available_modes.size() > 0:
-		player.current_mode = player.available_modes[0]
+	# 3. ZDECYDUJ, CO ZROBIĆ DALEJ (TO JEST NOWA CZĘŚĆ)
+	if is_main_menu:
+		# ----- JESTEŚMY W MAIN MENU -----
+		# Zmień scenę na pierwszy poziom
+		# Upewnij się, że ścieżka do Level_0 jest poprawna!
+		var error = get_tree().change_scene_to_file("res://scenes/level_0.tscn")
+		
+		if error != OK:
+			print("Błąd podczas ładowania sceny Level_0: ", error)
+	
+	else:
+		# ----- JESTEŚMY W DOMKU NA POZIOMIE -----
+		# Ukryj menu i odpauzuj grę
+		visible = false
+		get_tree().paused = false
+		
+		# Znajdź gracza i zaktualizuj jego HUD
+		var player = get_tree().get_first_node_in_group("player")
+		if player:
+			player._update_hud()
 
-	print(player.current_mode)
-	print(player.available_modes.size())
-	# Ukryj menu
-	visible = false
 
 func _on_button_pressed(index):
-	var mode = available_modes[index]
+	# Pobierz tryb (enum) z GameManager
+	var mode = GameManager.all_modes[index]
 	
-	# Sprawdź, czy tryb jest już w slotach
+	# Logika wyboru jest OK, ale upewnij się, że działa na ENUM
 	var found_slot = -1
 	for i in range(selected_slots.size()):
 		if selected_slots[i] == mode:
@@ -56,10 +69,8 @@ func _on_button_pressed(index):
 			break
 
 	if found_slot != -1:
-		# Tryb jest już wybrany → usuń go
 		selected_slots[found_slot] = null
 	else:
-		# Dodaj tryb do pierwszego wolnego slotu
 		for i in range(selected_slots.size()):
 			if selected_slots[i] == null:
 				selected_slots[i] = mode
@@ -69,4 +80,8 @@ func _on_button_pressed(index):
 
 func _update_slots():
 	for i in range(slot_labels.size()):
-		slot_labels[i].text = str(selected_slots[i]) if selected_slots[i] != null else "(pusty)"
+		if selected_slots[i] != null:
+			# Użyj nazwy z GameManager
+			slot_labels[i].text = GameManager.all_mode_names[selected_slots[i]]
+		else:
+			slot_labels[i].text = "(pusty)"

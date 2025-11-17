@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cy0r7vj7ehsca"]
+
+[ext_resource type="PackedScene" uid="uid://t0riss2whjof" path="res://scenes/menu.tscn" id="1_yqorp"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Menu" parent="." instance=ExtResource("1_yqorp")]
+layout_mode = 0
+offset_left = 481.0
+offset_top = 219.0
+offset_right = 481.0
+offset_bottom = 219.0
+is_main_menu = true

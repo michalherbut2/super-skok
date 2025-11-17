@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cougvisbbf0tg"]
+[gd_scene load_steps=8 format=3 uid="uid://cougvisbbf0tg"]
 
 [ext_resource type="Texture2D" uid="uid://civuxg5ct1gxx" path="res://sprites/Flaga.png" id="1_hdgai"]
+[ext_resource type="Script" uid="uid://gm2630j8cmes" path="res://scenes/flag.gd" id="1_step0"]
+[ext_resource type="PackedScene" uid="uid://t0riss2whjof" path="res://scenes/menu.tscn" id="3_7c7ky"]
 
 [sub_resource type="Animation" id="Animation_hdgai"]
 resource_name = "Flag"
@@ -41,7 +43,11 @@ _data = {
 &"RESET": SubResource("Animation_step0")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step0"]
+size = Vector2(16, 48)
+
 [node name="Flag" type="Node2D"]
+script = ExtResource("1_step0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -24)
@@ -55,3 +61,19 @@ libraries = {
 &"": SubResource("AnimationLibrary_7c7ky")
 }
 autoplay = "Flag"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_step0")
+
+[node name="Menu" parent="." instance=ExtResource("3_7c7ky")]
+visible = false
+offset_left = -119.0
+offset_top = -109.0
+offset_right = -119.0
+offset_bottom = -109.0
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_body_exited"]
