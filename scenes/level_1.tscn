@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=4 uid="uid://c2y2u2gka0whk"]
+[gd_scene load_steps=13 format=4 uid="uid://c2y2u2gka0whk"]
 
 [ext_resource type="Texture2D" uid="uid://cgp2i3rbf02us" path="res://sprites/BasicGround.png" id="1_fcfvj"]
 [ext_resource type="PackedScene" uid="uid://cougvisbbf0tg" path="res://scenes/Flag.tscn" id="2_pa8r4"]
 [ext_resource type="PackedScene" uid="uid://biibj01ba2jqn" path="res://scenes/player.tscn" id="3_15mv3"]
 [ext_resource type="Texture2D" uid="uid://dfdabw22r457o" path="res://sprites/drabina.png" id="4_e3sih"]
 [ext_resource type="PackedScene" uid="uid://cl7bxjk6vcmgr" path="res://scenes/HUD.tscn" id="5_2y5yt"]
+[ext_resource type="AudioStream" uid="uid://ru0gnawgs4gp" path="res://music/level1.mp3" id="6_fcfvj"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_uijja"]
 tile_data = PackedInt32Array(0, 0, 0, 1, 65536, 0, 2, 131072, 0)
@@ -85,3 +86,7 @@ tile_map_data = PackedByteArray("AAAEAP7/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAPz/AAAAAAA
 tile_set = SubResource("TileSet_qjcqe")
 
 [node name="HUD" parent="." instance=ExtResource("5_2y5yt")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_fcfvj")
+autoplay = true
