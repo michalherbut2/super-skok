@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dfdabw22r457o" path="res://sprites/drabina.png" id="5_5nv5w"]
 [ext_resource type="PackedScene" uid="uid://cl7bxjk6vcmgr" path="res://scenes/HUD.tscn" id="5_xp8tn"]
 [ext_resource type="PackedScene" uid="uid://cs5ctofhfqve1" path="res://scenes/star.tscn" id="7_rhhhf"]
-[ext_resource type="Texture2D" uid="uid://cgcvtish80fw" path="res://sprites/blue.png" id="8_qjcqe"]
+[ext_resource type="Texture2D" uid="uid://c4ickeqgasjex" path="res://sprites/Background.png" id="8_qjcqe"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rhhhf"]
 texture = ExtResource("5_5nv5w")
@@ -101,6 +101,6 @@ position = Vector2(175, -32)
 [node name="Parallax2D" type="Parallax2D" parent="ParallaxBackground"]
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D"]
-position = Vector2(582.875, 326.59375)
-scale = Vector2(29.910715, 17.71314)
+position = Vector2(575.3544, 322.5671)
+scale = Vector2(1.1477453, 1.1118903)
 texture = ExtResource("8_qjcqe")
