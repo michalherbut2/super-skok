@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://c2y2u2gka0whk"]
+[gd_scene load_steps=15 format=4 uid="uid://c2y2u2gka0whk"]
 
 [ext_resource type="Texture2D" uid="uid://cgp2i3rbf02us" path="res://sprites/BasicGround.png" id="1_fcfvj"]
 [ext_resource type="PackedScene" uid="uid://cougvisbbf0tg" path="res://scenes/Flag.tscn" id="2_pa8r4"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cl7bxjk6vcmgr" path="res://scenes/HUD.tscn" id="5_2y5yt"]
 [ext_resource type="AudioStream" uid="uid://ru0gnawgs4gp" path="res://music/level1.mp3" id="6_fcfvj"]
 [ext_resource type="PackedScene" uid="uid://d21ixtryatyfw" path="res://scenes/death_zone.tscn" id="7_pa8r4"]
+[ext_resource type="Texture2D" uid="uid://c4ickeqgasjex" path="res://sprites/Background.png" id="8_15mv3"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_uijja"]
 tile_data = PackedInt32Array(0, 0, 0, 1, 65536, 0, 2, 131072, 0)
@@ -106,3 +107,12 @@ rotation = -1.5707964
 [node name="DeathZone_top" parent="." instance=ExtResource("7_pa8r4")]
 position = Vector2(159.99997, -234.00003)
 rotation = -3.1415927
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D"]
+position = Vector2(575.3544, 322.5671)
+scale = Vector2(1.1477453, 1.1118903)
+texture = ExtResource("8_15mv3")
