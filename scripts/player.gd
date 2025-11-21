@@ -202,3 +202,16 @@ func is_in_water() -> bool:
 	# Na razie "fałszywa" funkcja – zawsze zwraca false,
 	# ale możesz ją podpiąć do obszaru "wody"
 	return false
+
+func _update_coin_counter():
+	# Pobierz liczbę monet z grupy
+	var coins_left = get_tree().get_nodes_in_group("coins").size()
+	
+	# Znajdź Label w HUD (dostosuj ścieżkę do swojego HUD)
+	# Załóżmy, że masz w HUD nowy Label o nazwie "CoinLabel"
+	var coin_label = get_node_or_null(hud_node_path).get_node_or_null("Control/CoinLabel")
+	
+	if coin_label:
+		coin_label.text = "Monety do zebrania: " + str(coins_left)
+
+# I wywołuj to w _physics_process lub po zebraniu monety

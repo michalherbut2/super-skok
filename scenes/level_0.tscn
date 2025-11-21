@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://cgdtu5a7l6rlp"]
+[gd_scene load_steps=19 format=4 uid="uid://cgdtu5a7l6rlp"]
 
 [ext_resource type="Texture2D" uid="uid://cgp2i3rbf02us" path="res://sprites/BasicGround.png" id="1_5uqbp"]
 [ext_resource type="PackedScene" uid="uid://biibj01ba2jqn" path="res://scenes/player.tscn" id="2_rerym"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c4ickeqgasjex" path="res://sprites/Background.png" id="8_qjcqe"]
 [ext_resource type="AudioStream" uid="uid://c6fvme83ml5le" path="res://music/level0.mp3" id="9_jv3i5"]
 [ext_resource type="PackedScene" uid="uid://d21ixtryatyfw" path="res://scenes/death_zone.tscn" id="10_ll25s"]
+[ext_resource type="PackedScene" uid="uid://cau076kcln27v" path="res://scenes/coin.tscn" id="11_sk60w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rhhhf"]
 texture = ExtResource("5_5nv5w")
@@ -125,3 +126,18 @@ rotation = -1.5707964
 [node name="DeathZone_top" parent="." instance=ExtResource("10_ll25s")]
 position = Vector2(159.99997, -234.00003)
 rotation = -3.1415927
+
+[node name="Coin" parent="." instance=ExtResource("11_sk60w")]
+position = Vector2(74, -94)
+
+[node name="Coin2" parent="." instance=ExtResource("11_sk60w")]
+position = Vector2(22, -132)
+
+[node name="Coin3" parent="." instance=ExtResource("11_sk60w")]
+position = Vector2(151, -208)
+
+[node name="Coin4" parent="." instance=ExtResource("11_sk60w")]
+position = Vector2(215, -169)
+
+[node name="Coin5" parent="." instance=ExtResource("11_sk60w")]
+position = Vector2(81, -182)

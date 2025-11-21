@@ -1,18 +1,50 @@
-[gd_scene format=3 uid="uid://cl7bxjk6vcmgr"]
+[gd_scene load_steps=3 format=3 uid="uid://cl7bxjk6vcmgr"]
+
+[ext_resource type="Script" uid="uid://ckql0bgxmxvrh" path="res://scripts/hud.gd" id="1_qpvh6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qpvh6"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.39, 0.39, 0.39, 0.84705883)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_qpvh6")
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
+[node name="MarginContainer" type="MarginContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
 
-[node name="Label" type="Label" parent="Control"]
-layout_mode = 0
-offset_left = 989.0
-offset_top = 17.0
-offset_right = 1029.0
-offset_bottom = 40.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "elo"
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qpvh6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer_Mode" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="IconMode" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer_Mode"]
+visible = false
+layout_mode = 2
+
+[node name="LabelMode" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer_Mode"]
+layout_mode = 2
+
+[node name="HBoxContainer_Coins" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="IconCoin" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer_Coins"]
+visible = false
+layout_mode = 2
+
+[node name="LabelCoin" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer_Coins"]
+layout_mode = 2

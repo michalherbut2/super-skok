@@ -1,6 +1,11 @@
 # GameManager.gd
 extends Node
 
+signal coins_updated(collected, total) # Sygnał dla HUD
+
+var total_coins = 0
+var collected_coins = 0
+
 # PRZENOSIMY ENUM TUTAJ - to jest teraz globalna definicja
 # WALK = 0, FLY = 1, CLIMB = 2, SWIM = 3, SLIDE = 4
 enum MovementMode { WALK, FLY, CLIMB, SWIM, SLIDE }
@@ -43,3 +48,13 @@ func switch_mode():
 		current_mode = selected_modes[0]
 	
 	print("GameManager: Przełączono tryb na: ", MovementMode.keys()[current_mode])
+
+func reset_coins():
+	collected_coins = 0
+	total_coins = get_tree().get_nodes_in_group("coins").size()
+	emit_signal("coins_updated", collected_coins, total_coins)
+
+func collect_coin():
+	collected_coins += 1
+	emit_signal("coins_updated", collected_coins, total_coins)
+	print("Zebrano monetę! Stan: ", collected_coins, "/", total_coins)
