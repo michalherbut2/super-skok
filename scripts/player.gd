@@ -5,7 +5,7 @@ extends CharacterBody2D
 
 @export var speed = 300
 @export var gravity = 30
-@export var jump_force = 300
+@export var jump_force = 450
 @export var max_fall_speed = 1000
 
 # parametry do trybu "pływanie"
