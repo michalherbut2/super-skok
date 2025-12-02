@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://c2y2u2gka0whk"]
+[gd_scene load_steps=17 format=4 uid="uid://c2y2u2gka0whk"]
 
 [ext_resource type="Texture2D" uid="uid://cgp2i3rbf02us" path="res://sprites/BasicGround.png" id="1_fcfvj"]
 [ext_resource type="PackedScene" uid="uid://cougvisbbf0tg" path="res://scenes/Flag.tscn" id="2_pa8r4"]
@@ -8,6 +8,8 @@
 [ext_resource type="AudioStream" uid="uid://ru0gnawgs4gp" path="res://music/level1.mp3" id="6_fcfvj"]
 [ext_resource type="PackedScene" uid="uid://d21ixtryatyfw" path="res://scenes/death_zone.tscn" id="7_pa8r4"]
 [ext_resource type="Texture2D" uid="uid://c4ickeqgasjex" path="res://sprites/Background.png" id="8_15mv3"]
+[ext_resource type="PackedScene" uid="uid://cs5ctofhfqve1" path="res://scenes/star.tscn" id="9_2y5yt"]
+[ext_resource type="PackedScene" uid="uid://cau076kcln27v" path="res://scenes/coin.tscn" id="10_2os1m"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_uijja"]
 tile_data = PackedInt32Array(0, 0, 0, 1, 65536, 0, 2, 131072, 0)
@@ -69,7 +71,7 @@ physics_layer_1/collision_layer = 2
 physics_layer_1/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_rhhhf")
 
-[node name="Level_0" type="Node2D"]
+[node name="Level_1" type="Node2D"]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(0, -1)
@@ -116,3 +118,27 @@ rotation = -3.1415927
 position = Vector2(580, 330)
 scale = Vector2(1.1477453, 1.1118903)
 texture = ExtResource("8_15mv3")
+
+[node name="Star" parent="." instance=ExtResource("9_2y5yt")]
+position = Vector2(1102, -433)
+
+[node name="Coin" parent="." instance=ExtResource("10_2os1m")]
+position = Vector2(54, -304)
+
+[node name="Coin2" parent="." instance=ExtResource("10_2os1m")]
+position = Vector2(52, -473)
+
+[node name="Coin3" parent="." instance=ExtResource("10_2os1m")]
+position = Vector2(547, -711)
+
+[node name="Coin4" parent="." instance=ExtResource("10_2os1m")]
+position = Vector2(1097, -643)
+
+[node name="Coin5" parent="." instance=ExtResource("10_2os1m")]
+position = Vector2(566, -513)
+
+[node name="Coin6" parent="." instance=ExtResource("10_2os1m")]
+position = Vector2(767, -349)
+
+[node name="Coin7" parent="." instance=ExtResource("10_2os1m")]
+position = Vector2(777, -852)
